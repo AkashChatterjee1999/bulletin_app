@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "794713438239",
+    "firebase_url": "https://bulletin-app-7d1e5.firebaseio.com",
+    "project_id": "bulletin-app-7d1e5",
+    "storage_bucket": "bulletin-app-7d1e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794713438239:android:19d06d8f822ffc8beafd2a",
+        "android_client_info": {
+          "package_name": "bulletinapp.bulletin_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794713438239-lvfqveh10j7ok5r3prieoheo4je618uf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6sJTpVgZV8zErRltBMbB97epnEIZ9U9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794713438239-lvfqveh10j7ok5r3prieoheo4je618uf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
