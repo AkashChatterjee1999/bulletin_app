@@ -4,9 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'hello.dart';
 import 'login.dart';
 import 'land.dart';
+import '_injector_.dart';
 void main() => runApp(Signup());
 QuerySnapshot data;
-perform_op ob = new perform_op();
+volatile_backend ob = new volatile_backend();
 bool can1 = false,can2 = false,can3 = false,can4 = false,can5 = false;
 class Signup extends StatelessWidget {
   // This widget is the root of your application.
@@ -29,7 +30,7 @@ class _home_pageState extends State<home_page> {
   var pass = TextEditingController();
   var pass1 = TextEditingController();
   var emp_id = TextEditingController();
-  void initState(){
+  /*void initState(){
     super.initState();
     setState(() {
       ob.retrieve_data().then((result){
@@ -37,7 +38,7 @@ class _home_pageState extends State<home_page> {
         print("Data fetched");
       });
     });
-  }
+  }*/
   @override
   Widget build(BuildContext context) {
     var ht = MediaQuery.of(context).size.height;
@@ -186,14 +187,18 @@ class _home_pageState extends State<home_page> {
                       mp['emp_id'] = emp_id.text.toString();
                       mp['pass'] = pass.text.toString();
                       mp['mail'] = email.text.toString();
-                      try{
-                          ob.Sign_up(mp);
-                          print("Signed up successulyy");
+                      ob.Signup(mp).then((result){
+                        if(result==1){
+                          if(current_user!=null)
+                           print(current_user.name+" Signed up successulyy");
                           Navigator.push(context, new MaterialPageRoute(builder: (context) => new H_page()));
                         }
-                        catch(e){
-                          print(e);
+                        else{
+                          print("Email already in use");
                         }
+                      }).catchError((e){
+                        print(e);
+                      });
                     });
                 },
               )//Sign up button

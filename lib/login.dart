@@ -1,9 +1,10 @@
+import 'package:bulletin_app/_injector_.dart';
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'land.dart';
 import 'hello.dart';
 void main() => runApp(Login());
-perform_op ob = new perform_op();
+volatile_backend ob = new volatile_backend();
 var email = new TextEditingController();
 var pass = new TextEditingController();
 bool can = false;
@@ -109,17 +110,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         elevation: 7.0,
                         child: GestureDetector(
                           onTap: () {
-                            Map<String,dynamic> mp = new Map();
-                            mp['email'] = email.text.toString();
-                            mp['pass'] = pass.text.toString();
-                            print(mp);
-                            bool res = ob.login(mp) as bool;
-                            if(res){
-                              //Navigator.push(context, new MaterialPageRoute(builder: (context) => new H_page()));
-                            }
-                            else{
-                              print("Error");
-                            }
+                            print("hi");
+                            var mail = email.text.toString();
+                            var password = pass.text.toString();
+                            print(mail+" "+password);
+                            ob.login(mail, password).then((result){
+                              if(result){
+                                if(current_user!=null)
+                                  print(current_user.email.toString() +"Logged in");
+                                  Navigator.push(context, new MaterialPageRoute(builder: (context) => new H_page()));
+                                }
+                              else{
+                                print("Invalid username or password");
+                              }
+                            }).catchError((e){
+                              print(e);
+                            });
                           },//login backend
                           child: Center(
                             child: Text(
