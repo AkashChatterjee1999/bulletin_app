@@ -48,4 +48,15 @@ class volatile_backend{
       throw Exception('Error');
     }
   }
+  Future<QuerySnapshot> fetchBroadcast() async{
+    if(current_user!=null)
+      throw Exception('Error');
+    else{
+      await db.collection('broadcast').getDocuments().then((result){
+        return result;
+      }).catchError((e){
+        throw Exception('Error');
+      });
+    }
+  }
 }
