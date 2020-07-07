@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
 class client{
@@ -66,6 +67,25 @@ class Post{
     this.photos = new List<String>();
     for(int i=0;i<photos.length;i++) this.photos.add(photos[i]);
     this.dateOfPost=dt.day.toString()+dt.month.toString()+dt.year.toString();
+  }
+}
+class broad_cast_msgs{
+  String msg;
+  String tstmp;
+  String msg_head;
+  broad_cast_msgs(String msg_head,String msg,String tstmp){
+    this.msg = msg;
+    this.msg_head = msg_head;
+    this.tstmp = tstmp;
+  }
+  static List<broad_cast_msgs> gen_docu(QuerySnapshot result){
+    List<broad_cast_msgs> res = new List();
+    for(int i=0;i<result.documents.length;i++){
+      res.add(new broad_cast_msgs(result.documents[i].data['msg_head'].toString(),
+                                   result.documents[i].data['msg'].toString(),
+                                   result.documents[i].data['tstmp'].toDate().toString()));
+    }
+    return res;
   }
 }
 class Grp{

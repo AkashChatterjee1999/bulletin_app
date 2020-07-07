@@ -5,6 +5,7 @@ import 'land.dart';
 import 'hello.dart';
 void main() => runApp(Login());
 volatile_backend ob = new volatile_backend();
+Future<bool> data;
 var email = new TextEditingController();
 var pass = new TextEditingController();
 bool can = false;
@@ -110,21 +111,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         elevation: 7.0,
                         child: GestureDetector(
                           onTap: () {
-                            print("hi");
                             var mail = email.text.toString();
                             var password = pass.text.toString();
                             print(mail+" "+password);
-                            ob.login(mail, password).then((result){
-                              if(result){
-                                if(current_user!=null)
-                                  print(current_user.email.toString() +"Logged in");
-                                  Navigator.push(context, new MaterialPageRoute(builder: (context) => new H_page()));
-                                }
-                              else{
-                                print("Invalid username or password");
-                              }
-                            }).catchError((e){
-                              print(e);
+                            setState(() {
+                              data = ob.login(mail, password);
+                              data.then((result){
+                                if(result && current_user!=null)
+                                  Navigator.of(context).push(new MaterialPageRoute(builder: (context) => new H_page()));
+                              });
                             });
                           },//login backend
                           child: Center(
@@ -139,11 +134,29 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
+                    SizedBox(height:20.0),
+                    FutureBuilder(
+                      future: data,
+                      builder: (_,snapshot){
+                        if(snapshot.connectionState==ConnectionState.waiting){
+                            return CircularProgressIndicator();
+                        }
+                        else{
+                          if(snapshot.hasData){
+                            if(snapshot.data) {
+                              return Text("Connected",style:TextStyle(color: Colors.red,fontSize: 12.0));
+                            }
+                            else
+                              return Text("Invalid Username or password",style:TextStyle(color: Colors.red,fontSize: 12.0));
+                            }
+                            else if(snapshot.hasError){
+                              return Text("Sorry connection problem occured",style:TextStyle(color: Colors.red,fontSize: 12.0));
+                            }
+                            else {print("hiello");return Text("");}
+                          }
+                        },
+                    ),
                     SizedBox(height: 20.0),
-                    Container(
-                      height: 40.0,
-                      color: Colors.transparent,
-                    )
                   ],
                 )),
             SizedBox(height: 15.0),

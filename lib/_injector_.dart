@@ -48,15 +48,20 @@ class volatile_backend{
       throw Exception('Error');
     }
   }
-  Future<QuerySnapshot> fetchBroadcast() async{
-    if(current_user!=null)
-      throw Exception('Error');
+  Future<List<broad_cast_msgs>> fetchBroadcast() async{
+    if(current_user==null)
+      throw Exception("No User");
     else{
-      await db.collection('broadcast').getDocuments().then((result){
-        return result;
-      }).catchError((e){
-        throw Exception('Error');
-      });
+        try{
+          QuerySnapshot repo = await db.collection('broadcast').getDocuments();
+          print("hello documents from firebase fetched");
+          List<broad_cast_msgs> lola;
+          lola = broad_cast_msgs.gen_docu(repo);
+          return lola;
+        }
+        catch(e) {
+          throw Exception(e);
+        }
+      }
     }
-  }
 }
