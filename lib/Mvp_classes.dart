@@ -9,34 +9,37 @@ class client{
   List<String> grp_admin_ids;   //This list contains grp ids which this client is admin of
   List<String> domain;
   String emp_id;
-  client(String _name,String _email,String _empid){
+  client(String _name,String _email,String _empid,String phoneno, List<dynamic> grpids, List<dynamic> grp_admin_ids, List<dynamic> Domain){
       this.name = _name;
       this.email = _email;
       this.phoneno = "1234";
       this.emp_id = _empid;
-      this.grpids = new List<String>();
+      this.grpids = List<String>();
+      for(int i=0;i<grpids.length;i++) this.grpids.add(grpids[i].toString());
       this.grp_admin_ids = List<String>();
+      for(int i=0;i<grp_admin_ids.length;i++) this.grp_admin_ids.add(grp_admin_ids[i].toString());
       this.domain = new List<String>();
+      for(int i=0;i<domain.length;i++) this.domain.add(domain[i].toString());
+      print("Client object created");
   }
   bool is_admin(String grp_id){
     return (this.grp_admin_ids.contains(grp_id))?true:false;
   }
-  void create_grp(String grpname,String grp_img_url,String grp_desc,String grp_abt,String id,String domain,bool isprivate){
+  Grp create_grp(String grpname,String grp_img_url,String icon_url,String grp_desc,String domain,bool isprivate,List<String> participants){
      Grp ob = new Grp();
      ob.grp_name = grpname;
      ob.wall_url = grp_img_url;
+     ob.icon_url = icon_url;
      ob.grp_id = Grp.unique_grp_id();
      ob.grp_desc = grp_desc;
      ob.domain = domain;
      ob.isprivate = isprivate;
      ob.participant_list_id = new List();
-     ob.participant_list_id.add(this.emp_id);
-     if(ob.isprivate){
-       //TODO: Implement the logic of private group here
+     ob.participant_list_id.add(this.email);
+     for(int i=1;i<participants.length;i++) {
+       ob.participant_list_id.add(participants[i]);
      }
-     else{
-       //TODO: return the link for hosted group id here
-     }
+     return ob;
   }
   bool remove_me(String grp_id){
     if(this.grpids.contains(grp_id)){
@@ -97,6 +100,7 @@ class Grp{
   List<String> participant_list_id;
   String grp_name;
   String wall_url;
+  String icon_url;
   static String unique_grp_id(){
     DateTime ob = DateTime.now();
     String id = ob.day.toString()+
@@ -110,6 +114,22 @@ class Grp{
                 ob.millisecondsSinceEpoch.toString()+
                 ob.microsecondsSinceEpoch.toString();
     return id;
+  }
+  static Grp serialize_Object_from_json(String id,Map<String,dynamic> data){
+    Grp ob = new Grp();
+    ob.grp_id = id;
+    ob.grp_name = data["Grp_name"];
+    ob.wall_url = data["Grp_image_url"];
+    ob.icon_url = data["Grp_icon_url"];
+    ob.grp_desc = data["Grp_desc"];
+    ob.domain = data["Grp_domain"];
+    ob.isprivate = data["Grp_isPrivate"];
+    ob.participant_list_id = new List();
+    for(int i=0;i<data["Participants"].length;i++){
+      ob.participant_list_id.add(data["Participants"][i]);
+    }
+    print(ob.grp_name+" "+ob.isprivate.toString()+" "+ob.participant_list_id.toString()+" "+ob.domain);
+    return ob;
   }
   bool add_post(String cap,String uid,){
     //TODO: implement the logic of add post here remember about pictured post and text post

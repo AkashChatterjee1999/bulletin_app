@@ -181,7 +181,7 @@ class _home_pageState extends State<home_page> {
                 ),
                 onTap: (){
                     setState(() {
-                      print("hi");
+                      print("hi Sign up tap");
                       Map<String,dynamic> mp = new Map();
                       mp['name'] = name.text.toString();
                       mp['emp_id'] = emp_id.text.toString();
@@ -194,7 +194,7 @@ class _home_pageState extends State<home_page> {
                           Navigator.push(context, new MaterialPageRoute(builder: (context) => new H_page()));
                         }
                         else{
-                          print("Email already in use");
+                          print("Email already in use"+result.toString());
                         }
                       }).catchError((e){
                         print(e);

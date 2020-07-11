@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import '_injector_.dart';
 import 'Mvp_classes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'groups.dart';
+import 'Create_group.dart';
+import 'App_themes_languages.dart';
+
 var Gsearch = new TextEditingController();
 var ob = new volatile_backend();
 int to_display = 1;
@@ -35,65 +39,11 @@ class _First_Page_homeState extends State<First_Page_home> {
   Widget build(BuildContext context) {
     var ht = MediaQuery.of(context).size.height;
     var wd = MediaQuery.of(context).size.width;
+    String uname = current_user.name.split(' ')[0].toLowerCase();
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: new Row(
-            children: <Widget>[
-              SizedBox(width:360*0.02),
-              Container(
-                height: ht*0.07,
-                width: wd*0.6,
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                  color:Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(20))
-                ),
-                child: TextField(
-                  controller: Gsearch,
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.search),
-                    hintText: "Search Groups",
-                  ),
-                  style: TextStyle(color: Colors.black,fontSize: 16.0),
-                ),
-              )
-            ],
-          ),
-          backgroundColor: Colors.blue,
-        ),
-        drawer: Drawer(
-          elevation: 5.0,
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: <Widget>[
-              SizedBox(height: ht*0.02,),
-              Center(
-                child: Container(
-                  height: ht*0.24,
-                  width: wd*0.35,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage('images/logo.png'),fit: BoxFit.contain),
-                  ),
-                ),
-              ),
-              SizedBox(height: ht*0.02,),
-              SizedBox(height: ht*0.002,width: wd*0.02,child: Container(color:Colors.black),),
-              ListTile(
-                title: Text("Profile"),
-                subtitle: Text("This is the option for you profile"),
-                leading: Icon(Icons.person),
-                //TODO: implement the todo function here
-              ),
-              ListTile(
-                title: Text("Notifications"),
-                subtitle: Text("Check your notifications here"),
-                leading: Icon(Icons.notifications_active),
-                //TODO: implement the todo function here
-              )
-            ],
-          ),
-        ),
+        appBar: Create_appbar(ht,wd,Gsearch),
+        drawer: Create_drawer(wd,ht,uname,context),
         body: Container(
           child: news_feed()
         ),
@@ -221,10 +171,10 @@ class _news_feedState extends State<news_feed> {
                 child: Column(
                   children: <Widget>[
                     Text(query[i].msg_head,style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
-                    SizedBox(height: ht*0.02,),
-                    Text(query[i].msg,style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w200),),
-                    SizedBox(height: ht*0.02,),
-                    Text("Posted on  :"+query[i].tstmp,style: TextStyle(fontSize: 10.0,fontWeight: FontWeight.w400),)
+                    SizedBox(height: ht*0.025,),
+                    Text(query[i].msg,style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w300),),
+                    SizedBox(height: ht*0.03,),
+                    Text("Posted on :  "+query[i].tstmp,style: TextStyle(fontSize: 10.0,fontWeight: FontWeight.w400),)
                   ],
                 ),
               ),
