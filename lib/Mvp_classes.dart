@@ -12,14 +12,24 @@ class client{
   client(String _name,String _email,String _empid,String phoneno, List<dynamic> grpids, List<dynamic> grp_admin_ids, List<dynamic> Domain){
       this.name = _name;
       this.email = _email;
+      print("Hellolola");
       this.phoneno = "1234";
       this.emp_id = _empid;
-      this.grpids = List<String>();
-      for(int i=0;i<grpids.length;i++) this.grpids.add(grpids[i].toString());
-      this.grp_admin_ids = List<String>();
-      for(int i=0;i<grp_admin_ids.length;i++) this.grp_admin_ids.add(grp_admin_ids[i].toString());
+      this.grpids = new List<String>();
+      if(grpids!=null) {
+        for(int i=0;i<grpids.length;i++)
+          this.grpids.add(grpids[i].toString());
+      }
+      this.grp_admin_ids = new List<String>();
+      if(grp_admin_ids!=null){
+        for(int i=0;i<grp_admin_ids.length;i++)
+          this.grp_admin_ids.add(grp_admin_ids[i].toString());
+      }
       this.domain = new List<String>();
-      for(int i=0;i<domain.length;i++) this.domain.add(domain[i].toString());
+      if(domain!=null){
+        for(int i=0;i<domain.length;i++)
+          this.domain.add(domain[i].toString());
+      }
       print("Client object created");
   }
   bool is_admin(String grp_id){

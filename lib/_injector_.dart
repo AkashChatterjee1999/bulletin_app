@@ -16,6 +16,7 @@ class volatile_backend{
         Map<String,dynamic> lo = new Map();
         lo['mail'] = mp['mail'];
         await db.collection('mails').add(lo);
+        print("Mailed logged"+lo['mail']);
         await db.collection('users_data').document(mp['mail']).setData({
           "emp_id": mp['emp_id'],
           "name": mp['name'],
@@ -26,11 +27,12 @@ class volatile_backend{
           "domain": [],
           "grpids": [],
         });
+        print("User sign up Data added to firebase");
         current_user = new client(mp['name'],mp['mail'],mp['emp_id'],mp['phoneno'],mp['grpids'],mp['grp_admin_ids'],mp['domain']);
         return 1;
       }
     catch(e){
-      throw Exception('Error');
+      throw Exception(e);
     }
   }
   Future<bool> login(String email,String pass) async{
@@ -124,4 +126,4 @@ class volatile_backend{
         throw Exception(e);
       }
     }
-}
+ }

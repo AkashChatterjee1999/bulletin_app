@@ -6,6 +6,7 @@ import 'login.dart';
 import 'land.dart';
 import '_injector_.dart';
 void main() => runApp(Signup());
+Future<int> Sign_data;
 QuerySnapshot data;
 volatile_backend ob = new volatile_backend();
 bool can1 = false,can2 = false,can3 = false,can4 = false,can5 = false;
@@ -181,20 +182,20 @@ class _home_pageState extends State<home_page> {
                 ),
                 onTap: (){
                     setState(() {
-                      print("hi Sign up tap");
                       Map<String,dynamic> mp = new Map();
                       mp['name'] = name.text.toString();
                       mp['emp_id'] = emp_id.text.toString();
                       mp['pass'] = pass.text.toString();
                       mp['mail'] = email.text.toString();
-                      ob.Signup(mp).then((result){
+                      Sign_data = ob.Signup(mp);
+                      Sign_data.then((result){
                         if(result==1){
                           if(current_user!=null)
-                           print(current_user.name+" Signed up successulyy");
+                           print(current_user.name+" Signed up successfuly");
                           Navigator.push(context, new MaterialPageRoute(builder: (context) => new H_page()));
                         }
                         else{
-                          print("Email already in use"+result.toString());
+                          print("Email already in use");
                         }
                       }).catchError((e){
                         print(e);
@@ -203,6 +204,31 @@ class _home_pageState extends State<home_page> {
                 },
               )//Sign up button
             ),
+            SizedBox(height:20.0),
+            Center(
+              child: FutureBuilder(
+                future: Sign_data,
+                builder: (_,snapshot){
+                  if(snapshot.connectionState==ConnectionState.waiting){
+                    return CircularProgressIndicator();
+                  }
+                  else{
+                    if(snapshot.hasData){
+                      if(snapshot.data==1) {
+                        return Text("Connected",style:TextStyle(color: Colors.red,fontSize: 12.0));
+                      }
+                      else
+                        return Text("Email already in use",style:TextStyle(color: Colors.red,fontSize: 12.0));
+                    }
+                    else if(snapshot.hasError){
+                      return Text("Sorry connection problem occured",style:TextStyle(color: Colors.red,fontSize: 12.0));
+                    }
+                    else {print("hello");return Text("");}
+                  }
+                },
+              ),
+            ),
+            SizedBox(height: 20.0),
             SizedBox(height:ht*0.04),
             Row(
                 children:<Widget>[
